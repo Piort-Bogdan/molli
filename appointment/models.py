@@ -8,7 +8,7 @@ class Reception(models.Model):
     """ model for adding doctor appointment """
 
     doctor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Doctor', related_name='doctor_receptions')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='dwner_receptions')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='owner_receptions')
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name='Pet')
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Price')
     date = models.DateTimeField(auto_now_add=True, verbose_name='Reception date')
@@ -16,6 +16,7 @@ class Reception(models.Model):
     preliminary_diagnosis = models.CharField(max_length=254, verbose_name='Preliminary diagnosis')
     appointments = models.TextField(verbose_name='Doctor\'s appointments')
     send_to_email = models.BooleanField(verbose_name='Do you want to send PDF version to email?')
+    recommended_research = models.CharField(max_length=254, verbose_name='Recommended research', blank=True)
 
     def __str__(self):
         return f'Doctor - {self.doctor.name},Pet name - {self.pet.name},'
