@@ -20,13 +20,13 @@ class Medicament(models.Model):
 
     class Meta:
         verbose_name = 'Medicament'
-        verbose_name_plural = 'Medicaments'
+        verbose_name_plural = 'Medicament'
         ordering = ('name', )
 
 
 class Manufacturer(models.Model):
 
-    """ adding manufacturer of medicaments """
+    """ adding manufacturer of medicament """
 
     name = models.CharField(max_length=100, verbose_name='Name')
     country = models.CharField(max_length=100, verbose_name='Country')
@@ -44,8 +44,8 @@ class Pharmacy(models.Model):
 
     """ model relating medicament and manufacturer in veterinary pharmacy """
 
-    medicament = models.ForeignKey('Medicament', on_delete=models.CASCADE, related_name='medicaments')
-    manufacturer = models.ForeignKey('Manufacturer', on_delete=models.CASCADE, related_name='manufacturers')
+    medicament = models.ForeignKey(Medicament, on_delete=models.CASCADE, related_name='medicaments')
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name='manufacturers')
 
     def __str__(self):
         return f'{self.medicament}, {self.manufacturer}'

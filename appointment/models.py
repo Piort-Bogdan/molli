@@ -7,9 +7,9 @@ class Reception(models.Model):
 
     """ model for adding doctor appointment """
 
-    doctor = models.ForeignKey('DoctorProfile', on_delete=models.CASCADE, verbose_name='Doctor')
-    owner = models.ForeignKey('PetOwnerProfile', on_delete=models.CASCADE, verbose_name='Owner')
-    pet = models.ForeignKey('Pet', on_delete=models.CASCADE, verbose_name='Pet')
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, verbose_name='Doctor')
+    owner = models.ForeignKey(PetOwnerProfile, on_delete=models.CASCADE, verbose_name='Owner')
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name='Pet')
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Price')
     date = models.DateTimeField(auto_now_add=True, verbose_name='Reception date')
     temperature = models.DecimalField(max_digits=2, decimal_places=1, verbose_name='Temperature')
@@ -37,7 +37,7 @@ class Appointment(models.Model):
 
     pet = models.ForeignKey(Pet, verbose_name='Pet', on_delete=models.CASCADE)
     description = models.TextField(verbose_name='Problem description')
-    owner = models.ForeignKey('PetOwnerProfile', verbose_name='Owner\' name', on_delete=models.CASCADE)
+    owner = models.ForeignKey(PetOwnerProfile, verbose_name='Owner\'s name', on_delete=models.CASCADE)
     status = models.CharField(max_length=9, choices=STATUS)
-    appointment_time = models.TimeField('%h-%m-%s')
-    appointment_date = models.DateField('%Y-%d-%m')
+    appointment_time = models.TimeField('Appointment time')
+    appointment_date = models.DateField(verbose_name='Appointment date')
