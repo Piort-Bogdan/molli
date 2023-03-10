@@ -1,9 +1,11 @@
 from django.shortcuts import render
-from django.views import generic
+from rest_framework.generics import CreateAPIView
 
 from .models import User, Pet
+from .serializers import UserCreateSerializer
 
-class registration(generic.CreateView):
+
+class UserCreateView(CreateAPIView):
     model = User
-    queryset = User.objects.all()
+    serializer_class = UserCreateSerializer
 

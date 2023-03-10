@@ -6,7 +6,7 @@ class User(AbstractUser):
 
     """ User custom model """
 
-    job_title = models.CharField(max_length=100, verbose_name='Job title')
+    job_title = models.CharField(max_length=100, verbose_name='Job title', blank=True)
     name = models.CharField(max_length=200, verbose_name='Full name')
     phone_number = models.CharField(max_length=30, verbose_name='Phone number')
     address = models.CharField(max_length=254, verbose_name='Address')
