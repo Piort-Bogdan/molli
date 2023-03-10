@@ -1,0 +1,81 @@
+
+#версия докера
+version: "3.9"
+
+
+services:
+  clinic:
+    platform: linux/amd64
+    build:
+      context: .
+    image: dominiusd/climic_molli
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/molli_vet
+    depends_on:
+      ClinicDB:
+        condition: service_healthy
+      migrations:
+        condition: service_completed_successfully
+#      rabbit:
+#        condition: service_started
+    healthcheck:
+      test: [ "CMD-SHELL", "celery", "--help" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  migrations:
+    platform: linux/amd64
+    build:
+      context: .
+    image: dominiusd/climic_molli
+    volumes:
+      - .:/molli_vet
+    depends_on:
+      ClinicDB:
+        condition: service_healthy
+    command: python /molli_vet/manage.py migrate
+
+  ClinicDB:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: microsd123
+      POSTGRES_DB: ClinicDB
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+#  rabbit:
+#    container_name: rabbitmq
+#    restart: always
+#    image: "rabbitmq:latest"
+#    volumes:
+#      - ./rabbit_data/:/var/lib/rabbitmq
+#    ports:
+#      - "15672:15672"
+#    command: ["bash", "-c", "chmod 400 /var/lib/rabbitmq/.erlang.cookie; rabbitmq-server"]
+#
+#  worker:
+#    platform: linux/amd64
+#    container_name: celeryworker
+#    build:
+#      context: .
+#    hostname: worker
+#    entrypoint: celery
+#    command: celery -A vet_clinic worker -l info
+#    volumes:
+#      - .:/molli_vet
+#    links:
+#      - rabbit
+#    depends_on:
+#      clinic:
+#        condition: service_healthy
+
