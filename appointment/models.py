@@ -1,14 +1,14 @@
 from django.db import models
 
-from users.models import DoctorProfile, PetOwnerProfile, Pet
+from users.models import User, Pet
 
 
 class Reception(models.Model):
 
     """ model for adding doctor appointment """
 
-    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE, verbose_name='Doctor')
-    owner = models.ForeignKey(PetOwnerProfile, on_delete=models.CASCADE, verbose_name='Owner')
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Doctor', related_name='doctor_receptions')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='dwner_receptions')
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, verbose_name='Pet')
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Price')
     date = models.DateTimeField(auto_now_add=True, verbose_name='Reception date')
@@ -18,7 +18,7 @@ class Reception(models.Model):
     send_to_email = models.BooleanField(verbose_name='Do you want to send PDF version to email?')
 
     def __str__(self):
-        return f'Doctor - {self.doctor},Pet name - {self.pet},'
+        return f'Doctor - {self.doctor.name},Pet name - {self.pet.name},'
 
     class Meta:
         verbose_name = 'Appointment'
@@ -37,7 +37,7 @@ class Appointment(models.Model):
 
     pet = models.ForeignKey(Pet, verbose_name='Pet', on_delete=models.CASCADE)
     description = models.TextField(verbose_name='Problem description')
-    owner = models.ForeignKey(PetOwnerProfile, verbose_name='Owner\'s name', on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, verbose_name='Owner\'s name', on_delete=models.CASCADE)
     status = models.CharField(max_length=9, choices=STATUS)
     appointment_time = models.TimeField('Appointment time')
     appointment_date = models.DateField(verbose_name='Appointment date')

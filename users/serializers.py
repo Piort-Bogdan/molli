@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Pet, PetOwnerProfile, DoctorProfile
+from .models import Pet, User
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -9,13 +9,8 @@ class PetSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PetOwnerProfileSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PetOwnerProfile
+        model = User
         fields = '__all__'
 
-
-class DoctorProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DoctorProfile
-        fields = '__all__'

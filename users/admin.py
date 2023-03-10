@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import DoctorProfile, Pet, PetOwnerProfile
+from .models import User, Pet
 
 
-@admin.register(DoctorProfile)
-class DoctorProfileAdmin(admin.ModelAdmin):
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
     pass
 
 
@@ -13,6 +13,3 @@ class PetAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(PetOwnerProfile)
-class PetOwnerProfileAdmin(admin.ModelAdmin):
-    pass
