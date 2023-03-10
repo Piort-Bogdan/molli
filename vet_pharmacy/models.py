@@ -44,8 +44,8 @@ class Pharmacy(models.Model):
 
     """ model relating medicament and manufacturer in veterinary pharmacy """
 
-    medicament = models.ForeignKey(Medicament, on_delete=models.CASCADE, related_name='medicaments')
-    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name='manufacturers')
+    medicament = models.ForeignKey('Medicament', on_delete=models.CASCADE, related_name='medicaments')
+    manufacturer = models.ForeignKey('Manufacturer', on_delete=models.CASCADE, related_name='manufacturers')
 
     def __str__(self):
         return f'{self.medicament}, {self.manufacturer}'
