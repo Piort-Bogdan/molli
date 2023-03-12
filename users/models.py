@@ -12,7 +12,7 @@ class User(AbstractUser):
     address = models.CharField(max_length=254, verbose_name='Address')
 
     def __str__(self):
-        return self.name
+        return f'Username: {self.username}, Full name: {self.name}'
 
     class Meta:
         verbose_name = 'User'

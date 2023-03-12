@@ -9,7 +9,7 @@ class Medicament(models.Model):
     name = models.CharField(max_length=100, verbose_name='Medicament\'s name')
     description = models.TextField(verbose_name='Description')
     img = models.ImageField(upload_to='media/medicine_img/%Y/%m/%d/', verbose_name='Image')
-    count = models.IntegerField(validators=[MinValueValidator(0)], verbose_name='Count')
+    count = models.PositiveIntegerField(verbose_name='Count')
     medicament_form = models.CharField(max_length=100, verbose_name='Medicament form')
     article = models.CharField(max_length=50, verbose_name='Article')
     price = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Price')

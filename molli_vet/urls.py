@@ -17,14 +17,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.routers import SimpleRouter
 
+from vet_pharmacy.views import MedicamentAddView
 
+# router = SimpleRouter()
+#
+# router.register(r'medicament', MedicamentAddView)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('appointment.urls')),
-    path('user/', include('users.urls')),
-    path('', include('vet_pharmacy.urls')),
+                  path('admin/', admin.site.urls),
+                  path('', include('appointment.urls')),
+                  path('user/', include('users.urls')),
+                  path('vet_pharmacy/', include('vet_pharmacy.urls')),
 
-
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#
+# urlpatterns += router.urls
