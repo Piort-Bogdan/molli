@@ -16,7 +16,6 @@ class MedicamentSerializerTestCase(TestCase):
                                          barcode='123123123123'
                                          )
         serializer_data = MedicamentSerializer(med1).data
-        print(serializer_data)
         expected_data = {
                 'id': med1.id,
                 'name': 'test med',
