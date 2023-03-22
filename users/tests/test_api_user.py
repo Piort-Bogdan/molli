@@ -44,6 +44,14 @@ class UserApiTestCase(APITestCase):
         self.assertEqual(status.HTTP_201_CREATED, response.status_code, response.data)
         self.assertEqual(Pet.objects.get(owner=self.user_1.id).id, self.user_1.id, response.data )
 
+    def test_pet_delete(self):
+        pass
+
+    def test_pet_update(self):
+        pass
+
+
+
 
 
 
