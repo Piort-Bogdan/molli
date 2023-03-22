@@ -19,7 +19,11 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
+from users.urls import router
 from vet_pharmacy.views import MedicamentAddView
+
+
+
 
 # router = SimpleRouter()
 #
@@ -28,7 +32,7 @@ from vet_pharmacy.views import MedicamentAddView
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include('appointment.urls')),
-                  path('user/', include('users.urls')),
+                  path('', include(router.urls)),
                   path('vet_pharmacy/', include('vet_pharmacy.urls')),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

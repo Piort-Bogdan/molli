@@ -1,18 +1,17 @@
 from django.shortcuts import render
-from rest_framework.generics import CreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet
 
 from .models import User, Pet
 from .permissions import IsAOwnerAndAuthenticatedOrReadOnly
 from .serializers import UserCreateSerializer, PetSerializer
 
 
-class UserCreateView(CreateAPIView):
-    model = User
+class UserCreateView(ModelViewSet):
+    queryset = User.objects.all()
     serializer_class = UserCreateSerializer
 
-class PetCreateView(CreateAPIView):
-    model = Pet
+class PetCreateView(ModelViewSet):
+    queryset = Pet.objects.all()
     serializer_class = PetSerializer
     permission_classes = [IsAOwnerAndAuthenticatedOrReadOnly]
 

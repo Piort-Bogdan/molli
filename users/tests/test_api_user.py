@@ -16,7 +16,7 @@ class UserApiTestCase(APITestCase):
                                                name='full name test1', password='1232424')
 
     def test_create_user(self):
-        url = reverse('create-user')
+        url = reverse('user-list')
         data = {
             'username': 'user2',
             'email': 'user1@email.ru',
@@ -31,7 +31,7 @@ class UserApiTestCase(APITestCase):
         self.assertEqual(User.objects.all().count(), 2, response.data)
 
     def test_create_pet(self):
-        url = reverse('create-pet')
+        url = reverse('pet-list')
         data = {
             'name': 'user1s pet',
             'year_of_birth': '1997-03-03',
