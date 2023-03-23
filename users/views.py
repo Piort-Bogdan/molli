@@ -3,12 +3,12 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import User, Pet
 from .permissions import IsAOwnerAndAuthenticatedOrReadOnly
-from .serializers import UserCreateSerializer, PetSerializer
+from .serializers import UserSerializer, PetSerializer
 
 
 class UserCreateView(ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserCreateSerializer
+    serializer_class = UserSerializer
 
 class PetCreateView(ModelViewSet):
     queryset = Pet.objects.all()
