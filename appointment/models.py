@@ -1,3 +1,6 @@
+from datetime import date
+
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from users.models import User, Pet
@@ -34,11 +37,13 @@ class Appointment(models.Model):
         ('NEW', 'NEW'),
         ('CANCELED', 'CANCELED'),
         ('CONFIRMED', 'CONFIRMED'),
+        ('FINISHED', 'FINISHED'),
     }
 
     pet = models.ForeignKey(Pet, verbose_name='Pet', on_delete=models.CASCADE)
     description = models.TextField(verbose_name='Problem description')
     owner = models.ForeignKey(User, verbose_name='Owner\'s name', on_delete=models.CASCADE)
-    status = models.CharField(max_length=9, choices=STATUS)
+    status = models.CharField(max_length=9, choices=STATUS, default='NEW')
     appointment_time = models.TimeField('Appointment time')
-    appointment_date = models.DateField(verbose_name='Appointment date')
+    appointment_date = models.DateField(verbose_name='Appointment date',
+                                        validators=[MinValueValidator(limit_value=date.today())], )
