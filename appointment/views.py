@@ -21,3 +21,7 @@ class ReceptionView(ModelViewSet):
     serializer_class = ReceptionSerializer
     permission_classes = [IsStaff]
 
+
+    def perform_create(self, serializer):
+        serializer.validated_data['doctor'] == self.request.user
+        serializer.save()
