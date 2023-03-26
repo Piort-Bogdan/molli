@@ -12,7 +12,7 @@ class User(AbstractUser):
     address = models.CharField(max_length=254, verbose_name='Address')
 
     def __str__(self):
-        return f'Username: {self.username}, Full name: {self.name}'
+        return self.name
 
     class Meta:
         verbose_name = 'User'
@@ -23,10 +23,16 @@ class Pet(models.Model):
 
     """ Model adding pet """
 
+    GENDER = (
+        ('F', 'female'),
+        ('M', 'male'),
+    )
+
     name = models.CharField(max_length=100, verbose_name='Pet\'s name')
     year_of_birth = models.DateField('Year of birth')
     species = models.CharField(max_length=100, verbose_name='Species')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Pet owner', related_name='Pets')
+    gender = models.CharField(choices=GENDER, max_length=6, verbose_name='Gender')
 
     def __str__(self):
         return self.name

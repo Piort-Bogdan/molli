@@ -7,7 +7,6 @@ from users.models import User, Pet
 
 
 class Reception(models.Model):
-
     """ model for adding doctor appointment """
 
     doctor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Doctor', related_name='doctor_receptions')
@@ -19,7 +18,9 @@ class Reception(models.Model):
     preliminary_diagnosis = models.CharField(max_length=254, verbose_name='Preliminary diagnosis')
     appointments = models.TextField(verbose_name='Doctor\'s appointments')
     send_to_email = models.BooleanField(verbose_name='Do you want to send PDF version to email?')
-    recommended_research = models.CharField(max_length=254, verbose_name='Recommended research', blank=True)
+    recommended_researches = models.CharField(max_length=254, verbose_name='Recommended research', blank=True)
+    weight = models.DecimalField(max_digits=4, decimal_places=1, verbose_name='Pet\'s weight(kg)')
+    gender = models.CharField(max_length=6, verbose_name='Gender')
 
     def __str__(self):
         return f'Doctor - {self.doctor.name},Pet name - {self.pet.name},'
@@ -30,7 +31,6 @@ class Reception(models.Model):
 
 
 class Appointment(models.Model):
-
     """ model for adding application for a doctor's appointment """
 
     STATUS = {
