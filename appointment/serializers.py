@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
+from users.models import Pet
 from .models import Appointment, Reception
-from .utilites.send_pdf import create_word_and_convert_to_pdf
+from .utilites.send_pdf import create_docx
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
@@ -9,24 +10,28 @@ class AppointmentSerializer(serializers.ModelSerializer):
         model = Appointment
         fields = ('pet', 'description', 'owner', 'appointment_time', 'appointment_date')
 
+
 class ReceptionSerializer(serializers.ModelSerializer):
-    phone_number = serializers.CharField(source='owner.phone_number', read_only=True)
-    species = serializers.CharField(source='pet.species', read_only=True)
-    year_of_birth = serializers.CharField(source='pet.year_of_birth', read_only=True)
+    # phone_number = serializers.CharField(max_length=30)
+    # species = serializers.CharField(max_length=20)
+    # year_of_birth = serializers.DateField()
+
     class Meta:
         model = Reception
-        fields = ('id', 'doctor', 'owner', 'pet', 'price', 'date', 'temperature', 'preliminary_diagnosis',
-                  'appointments', 'send_to_email', 'recommended_researches', 'weight', 'gender', 'phone_number',
-                  'species', 'year_of_birth', )
-    def to_representation(self, instance):
-        data = super().to_representation(instance)
-        data['doctor'] = instance.doctor.name
-        data['pet'] = instance.pet.name
-        data['owner'] = instance.owner.name
-        data['phone_number'] = instance.owner.phone_number
-        data['species'] = instance.pet.species
-        print(data)
-        create_word_and_convert_to_pdf(data)
-        return data
+        fields = (
+            'id', 'appointment', 'doctor', 'owner_name', 'related_owner_name', 'pet', 'price', 'date', 'temperature',
+            'preliminary_diagnosis', 'appointments', 'send_to_email', 'recommended_researches', 'weight', 'gender',
+            'phone_number', 'species', 'year_of_birth', 'breed', 'address'
+        )
 
-
+    def create(self, validated_data):
+        reception = super().create(validated_data)
+        reception.save()
+        receptions_id = reception.pk
+        v_d = validated_data
+        print(f'валидная инфа {v_d}')
+        if v_d['related_owner_name'] is None:
+            Pet.objects.create(name=v_d['pet'], year_of_birth=v_d['year_of_birth'], species=v_d['species'],
+                               owner_name=v_d['owner_name'], gender=v_d['gender'], breed=v_d['breed'])
+        create_docx(validated_data, receptions_id)
+        return reception

@@ -14,10 +14,10 @@ class AppointmentAPITestCase(APITestCase):
                                           name='full name test1', password='1232424', is_staff=True,
                                           )
 
-        self.pet_1 = Pet.objects.create(name='test_pet1', year_of_birth='1996-09-05', species='dog', owner=self.user_1)
+        self.pet_1 = Pet.objects.create(name='test_pet1', year_of_birth='1996-09-05', species='dog', related_owner_name=self.user_1)
 
         self.appointment_test_1 = Appointment.objects.create(pet=self.pet_1, description='test appointment description',
-                                                             owner=self.pet_1.owner, appointment_time='18:40',
+                                                             owner=self.pet_1.related_owner_name, appointment_time='18:40',
                                                              appointment_date='2023-04-06')
 
     def test_appointment_create(self):
@@ -37,6 +37,8 @@ class AppointmentAPITestCase(APITestCase):
         self.assertEqual(status.HTTP_201_CREATED, response.status_code, response.data)
         self.assertEqual(Appointment.objects.all().count(), 2, response.data)
         self.assertEqual(Appointment.objects.last().owner, self.user_1, response.data)
+
+
 
     def test_appointment_update(self):
         url = reverse('appointment-detail', args=(self.appointment_test_1.id,))

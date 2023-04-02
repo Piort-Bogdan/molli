@@ -31,9 +31,11 @@ class Pet(models.Model):
     name = models.CharField(max_length=100, verbose_name='Pet\'s name')
     year_of_birth = models.DateField('Year of birth')
     species = models.CharField(max_length=100, verbose_name='Species')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Pet owner', related_name='Pets')
+    related_owner_name = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Pet\' owner',
+                                          related_name='Pets', blank=True, null=True)
+    owner_name = models.CharField(max_length=100, verbose_name='Pet\'s owner', blank=True)
     gender = models.CharField(choices=GENDER, max_length=6, verbose_name='Gender')
-
+    breed = models.CharField(max_length=100, verbose_name='Pet\'s breed', blank=True)
     def __str__(self):
         return self.name
 
