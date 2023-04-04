@@ -8,7 +8,7 @@ from .serializers import MedicamentSerializer, ManufacturerSerializer
 from .models import Medicament, Manufacturer
 
 
-class MedicamentView(ModelViewSet):
+class MedicamentViewSet(ModelViewSet):
     queryset = Medicament.objects.all()
     model = Medicament
     serializer_class = MedicamentSerializer
@@ -17,7 +17,7 @@ class MedicamentView(ModelViewSet):
     search_fields = ['name', 'price']
     permission_classes = [IsStaff, ]
 
-class ManufacturerView(ModelViewSet):
+class ManufacturerViewSet(ModelViewSet):
     queryset = Manufacturer.objects.all()
     model = Manufacturer
     serializer_class = ManufacturerSerializer

@@ -5,11 +5,11 @@ from .permissions import IsAOwnerAndAuthenticatedOrReadOnly
 from .serializers import UserSerializer, PetSerializer
 
 
-class UserCreateView(ModelViewSet):
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class PetCreateView(ModelViewSet):
+class PetViewSet(ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
     permission_classes = [IsAOwnerAndAuthenticatedOrReadOnly]
