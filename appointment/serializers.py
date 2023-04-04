@@ -12,10 +12,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
 
 class ReceptionSerializer(serializers.ModelSerializer):
-    # phone_number = serializers.CharField(max_length=30)
-    # species = serializers.CharField(max_length=20)
-    # year_of_birth = serializers.DateField()
-
     class Meta:
         model = Reception
         fields = (

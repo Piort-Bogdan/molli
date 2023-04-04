@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
+from vet_pharmacy import urls as vet_pharmacy
 from users import urls as users
 from appointment import urls as appointment
 
@@ -30,6 +31,7 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include(users.router.urls)),
                   path('', include(appointment.router.urls)),
+                  path('', include(vet_pharmacy.router.urls)),
                   path('auth/', include('djoser.urls')),
                   path('auth/jwt/', include('djoser.urls.jwt')),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

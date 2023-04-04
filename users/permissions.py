@@ -7,6 +7,6 @@ class IsAOwnerAndAuthenticatedOrReadOnly(BasePermission):
         return bool(
             request.method in SAFE_METHODS or
             request.user and
-            request.user.is_authenticated or obj.owner == request.user
+            request.user.is_authenticated or obj.related_owner_name == request.user
         )
 

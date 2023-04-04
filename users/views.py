@@ -15,5 +15,5 @@ class PetCreateView(ModelViewSet):
     permission_classes = [IsAOwnerAndAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.validated_data['owner'] = self.request.user
+        serializer.validated_data['related_owner_name'] = self.request.user
         serializer.save()

@@ -27,7 +27,7 @@ class MedicamentApiTestCase(APITestCase):
 
     def test_get(self):
 
-        url = reverse('medicament')
+        url = reverse('medicament-list')
         response = self.client.get(url)
         serializer_data = MedicamentSerializer([self.med1, self.med2], many=True).data
         self.assertEqual(status.HTTP_200_OK, 200)

@@ -10,14 +10,16 @@ from users.models import User, Pet
 
 class AppointmentAPITestCase(APITestCase):
     def setUp(self):
-        self.user_1 = User.objects.create(username='user1', phone_number='12312312312', address='test address1',
-                                          name='full name test1', password='1232424', is_staff=True,
-                                          )
+        self.user_1 = User.objects.create_user(username='user1', phone_number='12312312312', address='test address1',
+                                               name='full name test1', password='1232424', is_staff=True,
+                                               )
 
-        self.pet_1 = Pet.objects.create(name='test_pet1', year_of_birth='1996-09-05', species='dog', related_owner_name=self.user_1)
+        self.pet_1 = Pet.objects.create(name='test_pet1', year_of_birth='1996-09-05', species='dog',
+                                        related_owner_name=self.user_1)
 
         self.appointment_test_1 = Appointment.objects.create(pet=self.pet_1, description='test appointment description',
-                                                             owner=self.pet_1.related_owner_name, appointment_time='18:40',
+                                                             owner=self.pet_1.related_owner_name,
+                                                             appointment_time='18:40',
                                                              appointment_date='2023-04-06')
 
     def test_appointment_create(self):
@@ -30,7 +32,7 @@ class AppointmentAPITestCase(APITestCase):
             'appointment_date': '2023-04-06'
 
         }
-        self.client.force_login(self.user_1)
+        self.client.force_authenticate(self.user_1)
         serialized_data = json.dumps(data)
         response = self.client.post(url, data=serialized_data, content_type='application/json')
 
@@ -38,15 +40,14 @@ class AppointmentAPITestCase(APITestCase):
         self.assertEqual(Appointment.objects.all().count(), 2, response.data)
         self.assertEqual(Appointment.objects.last().owner, self.user_1, response.data)
 
-
-
     def test_appointment_update(self):
         url = reverse('appointment-detail', args=(self.appointment_test_1.id,))
         data = {
             'description': 'Patched description'
         }
         json_data = json.dumps(data)
-        self.client.force_login(self.user_1)
+        # self.client.force_login(self.user_1)
+        self.client.force_authenticate(self.user_1)
         response = self.client.patch(url, data=json_data, content_type='application/json')
 
         self.assertEqual(status.HTTP_200_OK, response.status_code, response.data)
@@ -56,12 +57,12 @@ class AppointmentAPITestCase(APITestCase):
 
     def test_appointment_delete(self):
         url = reverse('appointment-detail', args=(self.appointment_test_1.id,))
-        self.client.force_login(self.user_1)
+        # self.client.force_login(self.user_1)
+        self.client.force_authenticate(self.user_1)
+
         response = self.client.delete(url)
 
-        self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code)
-
-        pass
+        self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code, response.data)
 
 
 class ReceptionAPITestCase(APITestCase):
@@ -70,47 +71,67 @@ class ReceptionAPITestCase(APITestCase):
                                           name='full name test1', password='1232424', is_staff=True,
                                           )
 
-        self.pet_1 = Pet.objects.create(name='test_pet1', year_of_birth='1996-09-05', species='dog', owner=self.user_1)
+        self.pet_1 = Pet.objects.create(name='test_pet1', year_of_birth='1996-09-05', species='dog',
+                                        related_owner_name=self.user_1)
 
-        self.reception_test_1 = Reception.objects.create(doctor=self.user_1, owner=self.pet_1.owner,
+        self.reception_test_1 = Reception.objects.create(doctor=self.user_1,
+                                                         related_owner_name=self.pet_1,
                                                          pet=self.pet_1, price=15, temperature=39.3,
                                                          preliminary_diagnosis='test diagnosis',
                                                          appointments='test_appointments',
                                                          send_to_email=True,
-                                                         recommended_research='Reccomended research test',
+                                                         recommended_researches='Reccomended research test',
+                                                         weight=43.0,
+                                                         gender='m',
+                                                         year_of_birth='2023-03-03',
+                                                         breed='Dog',
+                                                         phone_number='123124123423',
+
                                                          )
 
     def test_reception_create(self):
         url = reverse('reception-list')
         data = {
             'doctor': self.user_1.id,
-            'owner': self.pet_1.owner.id,
+            'owner': self.pet_1.related_owner_name.id,
             'pet': self.pet_1.id,
             'price': '15.00',
             'temperature': '34.5',
             'preliminary_diagnosis': 'diagnosis',
             'appointments': 'Doctors recomendatoin appointmets',
             'send_to_email': False,
-            'recommended_research': 'doctors recomendation researches'
-
+            'recommended_research': 'doctors recomendation researches',
+            'weight': 43.0,
+            'gender': 'm',
+            'year_of_birth': '2023-03-03',
+            'breed': 'Dog',
+            'phone_number': '123124123423',
+            'related_owner_name': None,
+            'species': 'dog',
+            'owner_name': self.user_1.username
         }
 
         json_data = json.dumps(data)
-        self.client.force_login(self.user_1)
+        # self.client.force_login(self.user_1)
+        self.client.force_authenticate(self.user_1)
         response = self.client.post(url, data=json_data, content_type='application/json')
 
         self.assertEqual(status.HTTP_201_CREATED, response.status_code, response.data)
 
     def test_reception_delete(self):
         url = reverse('reception-detail', args=(self.reception_test_1.id,))
-        self.client.force_login(self.user_1)
+        # self.client.force_login(self.user_1)
+        self.client.force_authenticate(self.user_1)
+
         response = self.client.delete(url)
 
         self.assertEqual(status.HTTP_204_NO_CONTENT, response.status_code, response.data)
 
     def test_reception_update(self):
         url = reverse('reception-detail', args=(self.reception_test_1.id,))
-        self.client.force_login(self.user_1)
+        # self.client.force_login(self.user_1)
+        self.client.force_authenticate(self.user_1)
+
         data = {
             'temperature': 50.0,
         }

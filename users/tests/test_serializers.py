@@ -13,9 +13,9 @@ class UserSerializerTestCase(TestCase):
                                           address='test address2', name='full name test2', job_title='DOC2',
                                           email='emailtest2@mail.ru', )
         self.pet_1 = Pet.objects.create(name='test_pet_name1', year_of_birth='1997-09-09',
-                                        species='dog', owner=self.user_1)
+                                        species='dog', related_owner_name=self.user_1)
         self.pet_2 = Pet.objects.create(name='test_pet_name2', year_of_birth='1996-09-09',
-                                        species='dog2', owner=self.user_2)
+                                        species='dog2', related_owner_name=self.user_2)
 
     def test_user_serializer(self):
         serialized_data = UserSerializer([self.user_1, self.user_2], many=True).data
@@ -50,13 +50,13 @@ class UserSerializerTestCase(TestCase):
             'name': 'test_pet_name1',
             'year_of_birth': '1997-09-09',
             'species': 'dog',
-            'owner': self.user_1.id
+            'related_owner_name': self.user_1.id
         },
             {
                 'name': 'test_pet_name2',
                 'year_of_birth': '1996-09-09',
                 'species': 'dog2',
-                'owner': self.user_2.id
+                'related_owner_name': self.user_2.id
             }]
 
         self.assertEqual(serializers_data, expected_data, (serializers_data, expected_data))
